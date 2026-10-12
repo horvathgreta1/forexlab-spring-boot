@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Forex Számla')}"></head>
+<body style="background: #0b0f19; color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column;">
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container my-auto py-5">
+    <!-- Címsor és élő státusz -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1" style="color: #ffffff; letter-spacing: -0.02em;">OANDA Számlainformációk</h2>
+            <p class="mb-0" style="color: #94a3b8; font-size: 0.95rem;">Élő kereskedési számlaáttekintés és tőkehelyzet</p>
+        </div>
+        <div>
+            <span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 50px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; font-size: 0.8rem; font-weight: 600;">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 10px #10b981;"></span>
+                Kapcsolódva: OANDA v20 API
+            </span>
+        </div>
+    </div>
+
+    <!-- Hibaüzenet ha van -->
+    <div th:if="${error}" class="alert alert-danger mb-4" th:text="${error}"
+         style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; border-radius: 0.75rem;"></div>
+
+    <div th:if="${account}">
+        <!-- Felső KPI Kártyák -->
+        <div class="row g-4 mb-4">
+            <!-- Egyenleg -->
+            <div class="col-md-4">
+                <div class="p-4 h-100" style="background: rgba(15, 23, 42, 0.85); border-radius: 1rem; border: 1px solid rgba(16, 185, 129, 0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.4);">
+                    <span style="color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">Egyenleg (Balance)</span>
+                    <h3 class="fw-bold mt-2 mb-0" style="color: #34d399; text-shadow: 0 0 15px rgba(52, 211, 153, 0.3);"
+                        th:text="${account.balance} + ' ' + ${account.currency}"></h3>
+                </div>
+            </div>
+
+            <!-- Nettó Eszközérték (NAV) -->
+            <div class="col-md-4">
+                <div class="p-4 h-100" style="background: rgba(15, 23, 42, 0.85); border-radius: 1rem; border: 1px solid rgba(56, 189, 248, 0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.4);">
+                    <span style="color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">Nettó Eszközérték (NAV)</span>
+                    <h3 class="fw-bold mt-2 mb-0" style="color: #ffffff;"
+                        th:text="${account.NAV} + ' ' + ${account.currency}"></h3>
+                </div>
+            </div>
+
+            <!-- Nem realizált P/L -->
+            <div class="col-md-4">
+                <div class="p-4 h-100" style="background: rgba(15, 23, 42, 0.85); border-radius: 1rem; border: 1px solid rgba(148, 163, 184, 0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.4);">
+                    <span style="color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">Nem Realizált P/L</span>
+                    <h3 class="fw-bold mt-2 mb-0"
+                        th:style="${#strings.startsWith(account.unrealizedPL, '-')} ? 'color: #f87171;' : 'color: #34d399;'"
+                        th:text="${account.unrealizedPL} + ' ' + ${account.currency}"></h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Részletes Technikai Adatlap -->
+        <div class="p-4" style="background: rgba(15, 23, 42, 0.85); border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 12px 30px rgba(0,0,0,0.4);">
+            <h5 class="fw-bold mb-3" style="color: #ffffff; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.75rem;">
+                Számla Részletei és Megbízások
+            </h5>
+
+            <div class="row g-3">
+                <div class="col-sm-6 col-md-3">
+                    <div class="p-3" style="background: rgba(255, 255, 255, 0.03); border-radius: 0.5rem; border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div style="color: #94a3b8; font-size: 0.8rem;">Számla azonosító (ID)</div>
+                        <div class="fw-bold text-white mt-1" style="font-family: monospace; font-size: 0.95rem;" th:text="${account.id}"></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-3">
+                    <div class="p-3" style="background: rgba(255, 255, 255, 0.03); border-radius: 0.5rem; border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div style="color: #94a3b8; font-size: 0.8rem;">Bázis Devizanem</div>
+                        <div class="fw-bold text-white mt-1" th:text="${account.currency}"></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-3">
+                    <div class="p-3" style="background: rgba(255, 255, 255, 0.03); border-radius: 0.5rem; border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div style="color: #94a3b8; font-size: 0.8rem;">Nyitott Pozíciók</div>
+                        <div class="fw-bold text-info mt-1" th:text="${account.openPositionCount}"></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-3">
+                    <div class="p-3" style="background: rgba(255, 255, 255, 0.03); border-radius: 0.5rem; border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div style="color: #94a3b8; font-size: 0.8rem;">Aktív Trade-ek Száma</div>
+                        <div class="fw-bold text-info mt-1" th:text="${account.openTradeCount}"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gyors navigáció alul -->
+            <div class="d-flex justify-content-end gap-3 mt-4 pt-3" style="border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                <a th:href="@{/forex/positions}" class="btn btn-sm px-3 py-2 fw-semibold"
+                   style="border: 1px solid #38bdf8; color: #38bdf8; background: rgba(56, 189, 248, 0.08); border-radius: 0.5rem; text-decoration: none;">
+                    Nyitott Pozíciók Megtekintése &rarr;
+                </a>
+                <a th:href="@{/forex/open}" class="btn btn-sm px-3 py-2 fw-semibold"
+                   style="background: #10b981; color: #ffffff; border-radius: 0.5rem; text-decoration: none;">
+                    Új Pozíció Nyitása +
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}" class="mt-auto"></footer>
+</body>
+</html>

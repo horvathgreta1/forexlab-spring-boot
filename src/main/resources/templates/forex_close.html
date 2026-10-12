@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Pozíció zárás')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+<main class="container">
+    <div class="card p-4">
+        <h2>Pozíció Zárása Piaci Áron</h2>
+        <form th:action="@{/forex/close}" th:object="${form}" method="post" class="mt-3">
+            <div class="mb-3">
+                <label class="form-label">Zárni kívánt Trade ID:</label>
+                <input type="number" class="form-control" th:field="*{tradeId}" placeholder="pl. 101" required>
+                <div class="form-text">A nyitott pozíciók azonosítóját a 'Nyitott pozíciók' menüpontban találod.</div>
+            </div>
+            <button type="submit" class="btn btn-danger">Pozíció Zárása</button>
+        </form>
+
+        <div th:if="${msg}" class="alert alert-success mt-3" th:text="${msg}"></div>
+        <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>
