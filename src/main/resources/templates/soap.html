@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('MNB SOAP')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container">
+    <div class="card p-4 mb-4">
+        <h2>Magyar Nemzeti Bank Árfolyam Lekérdezés</h2>
+        <form th:action="@{/soap}" th:object="${form}" method="post" class="row g-3 mt-2">
+            <div class="col-md-4">
+                <label class="form-label">Deviza:</label>
+                <select class="form-select" th:field="*{currency}">
+                    <option value="EUR">EUR</option>
+                    <option value="USD">USD</option>
+                    <option value="GBP">GBP</option>
+                    <option value="CHF">CHF</option>
+                    <option value="JPY">JPY</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Kezdő dátum:</label>
+                <input type="date" class="form-control" th:field="*{startDate}" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Befejező dátum:</label>
+                <input type="date" class="form-control" th:field="*{endDate}" required>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Lekérdezés és Grafikon Rajzolás</button>
+            </div>
+        </form>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div th:if="${dates != null and !dates.isEmpty()}" class="card p-4 mb-4">
+        <h4>Árfolyam grafikon (<span th:text="${form.currency}"></span>/HUF)</h4>
+        <div style="height: 400px;">
+            <canvas id="rateChart"></canvas>
+        </div>
+        <script th:inline="javascript">
+            const ctx = document.getElementById('rateChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: /*[[${dates}]]*/ [],
+                    datasets: [{
+                        label: /*[[${form.currency} + ' árfolyam (HUF)']]*/ 'Árfolyam',
+                        data: /*[[${rates}]]*/ [],
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        </script>
+
+        <h5 class="mt-4">Nyers válaszadatok:</h5>
+        <pre class="bg-light p-3 border rounded" style="max-height: 200px; overflow-y: auto;" th:text="${rawXml}"></pre>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>
