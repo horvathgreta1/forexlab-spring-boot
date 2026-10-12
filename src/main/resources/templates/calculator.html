@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>4 Műveletes Kalkulátor - Teszt Menü</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .card-custom {
+            background-color: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+        .form-control, .form-select {
+            background-color: #1f2937;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #f8fafc;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #1f2937;
+            border-color: #3b82f6;
+            color: #fff;
+            box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+        }
+        .btn-calc {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            border: none;
+            font-weight: 500;
+        }
+        .btn-calc:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{layout :: navbar}"></div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card card-custom shadow-lg p-4">
+                <h3 class="text-center mb-4 fw-bold text-light">4 Műveletes Kalkulátor</h3>
+
+                <form th:action="@{/calculator}" th:object="${calculatorForm}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label text-secondary small">Első szám (A)</label>
+                        <input type="number" step="any" class="form-control" th:field="*{num1}" required placeholder="pl. 10">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-secondary small">Művelet</label>
+                        <select class="form-select" th:field="*{operation}">
+                            <option value="add">Összeadás (+)</option>
+                            <option value="sub">Kivonás (-)</option>
+                            <option value="mul">Szorzás (×)</option>
+                            <option value="div">Osztás (÷)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-secondary small">Második szám (B)</label>
+                        <input type="number" step="any" class="form-control" th:field="*{num2}" required placeholder="pl. 2">
+                    </div>
+
+                    <button type="submit" class="btn btn-calc btn-primary w-100 py-2">Számolás</button>
+                </form>
+
+                <div th:if="${result != null}" class="alert alert-success mt-4 bg-opacity-25 border-success text-success">
+                    <strong>Eredmény: </strong> <span th:text="${result}"></span>
+                </div>
+                <div th:if="${error != null}" class="alert alert-danger mt-4 bg-opacity-25 border-danger text-danger">
+                    <strong>Hiba: </strong> <span th:text="${error}"></span>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a th:href="@{/}" class="text-secondary small text-decoration-none">&larr; Vissza a főoldalra</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{layout :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
