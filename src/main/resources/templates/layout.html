@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Java Alkalmazások Beadandó</title>
+    <!-- Reszponzív Bootstrap 5 téma -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js a SOAP grafikonhoz -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #0b0f19;
+            color: #f1f5f9;
+        }
+        main { flex: 1; }
+
+        /* Navigáció */
+        .navbar {
+            background: rgba(15, 23, 42, 0.95) !important;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        .navbar-brand {
+            color: #38bdf8 !important;
+            letter-spacing: -0.01em;
+        }
+        .nav-link {
+            color: #cbd5e1 !important;
+            transition: color 0.2s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #38bdf8 !important;
+        }
+
+        .dropdown-menu {
+            background: #0f172a;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        .dropdown-item {
+            color: #cbd5e1;
+        }
+        .dropdown-item:hover {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+        }
+        .dropdown-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Globális kártyák sötét glassmorphism stílusban */
+        .card {
+            background: rgba(15, 23, 42, 0.85) !important;
+            color: #f1f5f9 !important;
+            border: 1px solid rgba(56, 189, 248, 0.2) !important;
+            border-radius: 1rem !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
+        }
+        .card h2, .card h3, .card h4, .card h5 {
+            color: #ffffff !important;
+        }
+
+
+        /* Globális sötét táblázatok a pozíciókhoz és historikus árakhoz */
+        .table {
+            color: #cbd5e1 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            margin-bottom: 0;
+        }
+        .table > :not(caption) > * > * {
+            background-color: transparent !important;
+            color: inherit !important;
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+            padding: 0.85rem 1rem;
+        }
+        .table th {
+            color: #94a3b8 !important;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.03) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Űrlapmezők sötét stílusa (select, input) */
+        .form-control, .form-select {
+            background-color: #0b0f19 !important;
+            border: 1px solid rgba(56, 189, 248, 0.3) !important;
+            color: #f1f5f9 !important;
+            border-radius: 0.5rem;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25) !important;
+        }
+        .form-label {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        /* Lábléc */
+        footer {
+            background: #060911 !important;
+            color: #94a3b8 !important;
+            padding: 24px 0;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        /* 1. Világoskék kártyák/dobozok szövegszíne: kontrasztos sötétkék/fekete */
+        .alert-info, .bg-info, [class*="alert-info"] {
+            background-color: #cff4fc !important;
+            border-color: #b6effb !important;
+            color: #055160 !important;
+        }
+        .alert-info h1, .alert-info h2, .alert-info h3, .alert-info h4, .alert-info h5,
+        .alert-info strong, .bg-info h1, .bg-info h2, .bg-info h3, .bg-info h4 {
+            color: #082f49 !important; /* Mélysötét, tiszta fekete/kék */
+            font-weight: 700 !important;
+        }
+
+        /* 2. Sötét háttéren lévő leírások, súgószövegek (form-text, text-muted) javítása */
+        .text-muted, .form-text, small {
+            color: #94a3b8 !important; /* Jól olvasható világos szürke */
+        }
+
+        /* 3. Input beviteli mezők szövege és helykitöltője (placeholder) */
+        .form-control::placeholder {
+            color: #64748b !important; /* Tisztán kivehető halványszürke */
+            opacity: 1;
+        }
+        .form-control {
+            color: #f8fafc !important;
+        }
+        /* Nyers SOAP XML válaszmező (textarea / pre) sötét kódnézete */
+        textarea, pre, .form-control[readonly] {
+            background-color: #050811 !important;
+            color: #38bdf8 !important; /* Jól olvasható neonkék kód-szöveg */
+            border: 1px solid rgba(56, 189, 248, 0.3) !important;
+            font-family: monospace;
+        }
+    </style>
+    <li class="nav-item">
+        <a class="nav-link" href="/calculator">Teszt (Kalkulátor)</a>
+    </li>
+</head>
+<body>
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand fw-bold" th:href="@{/}">Java Beadandó</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}">Főoldal</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/soap}">MNB SOAP</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/calculator}">Teszt</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/react">React CRUD</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Forex</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/forex/account}">Számlainfó</a></li>
+                        <li><a class="dropdown-item" th:href="@{/forex/actual}">Aktuális ár</a></li>
+                        <li><a class="dropdown-item" th:href="@{/forex/historical}">Historikus ár</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" th:href="@{/forex/open}">Pozíció nyitás</a></li>
+                        <li><a class="dropdown-item" th:href="@{/forex/positions}">Nyitott pozíciók</a></li>
+                        <li><a class="dropdown-item" th:href="@{/forex/close}">Pozíció zárás</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<footer th:fragment="footer" class="text-center">
+    <div class="container">
+        <!-- Itt írd át a neveteket és Neptun kódjaitokat! -->
+        <p class="mb-1 text-light"><strong>Készítők:</strong> Horváth Gréta - AZQ13J &amp; Dibáczi Eszter - AF96RG</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</footer>
+</body>
+</html>

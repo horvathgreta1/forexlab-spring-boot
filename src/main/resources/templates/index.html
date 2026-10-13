@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Főoldal')}"></head>
+<body style="background: #0b0f19; color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column;">
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container my-auto py-5">
+    <!-- Hero Box javított távolságokkal és paddinggel -->
+    <div class="p-5 text-center position-relative overflow-hidden"
+         style="background: linear-gradient(180deg, rgba(11, 15, 25, 0.75) 0%, rgba(15, 23, 42, 0.92) 100%),
+                url('https://tse4.mm.bing.net/th/id/OIP.YRxozTTxHXi7nKGcpnTibAHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3');
+                background-size: cover;
+                background-position: center;
+                border-radius: 1.25rem;
+                border: 1px solid rgba(56, 189, 248, 0.25);
+                box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 30px rgba(14, 165, 233, 0.15);
+                margin-bottom: 3rem;
+                padding-top: 3.5rem !important;
+                padding-bottom: 3.5rem !important;">
+
+        <!-- Élő kapcsolat státusz badge -->
+        <div class="mb-4">
+            <span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 18px; border-radius: 50px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 10px #10b981;"></span>
+                Élő API Kapcsolat &bull; Java Spring Boot &bull; OANDA v20
+            </span>
+        </div>
+
+        <h1 class="display-4 fw-bold mb-3" style="color: #ffffff; letter-spacing: -0.02em; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
+            Pénzügyi Adat- és Kereskedési Rendszer
+        </h1>
+
+        <p class="lead mx-auto mb-5" style="max-width: 760px; color: #cbd5e1; font-size: 1.15rem; line-height: 1.7;">
+            Vállalati szintű Java Spring Boot webalkalmazás a Magyar Nemzeti Bank hivatalos SOAP adatszolgáltatásának és az OANDA devizapiaci REST v20 motorjának párhuzamos integrációjával.
+        </p>
+
+        <!-- Akció gombok szellősebb elrendezéssel -->
+        <div class="d-flex justify-content-center gap-4 flex-wrap mb-2">
+            <a th:href="@{/soap}" class="btn px-4 py-3 fw-bold"
+               style="background: linear-gradient(135deg, #2563eb, #0284c7); color: #ffffff; border: none; border-radius: 0.5rem; box-shadow: 0 4px 18px rgba(37, 99, 235, 0.4); text-decoration: none; min-width: 220px;">
+                MNB SOAP Elemzés &rarr;
+            </a>
+            <a th:href="@{/forex/account}" class="btn px-4 py-3 fw-bold"
+               style="background: linear-gradient(135deg, #059669, #10b981); color: #ffffff; border: none; border-radius: 0.5rem; box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4); text-decoration: none; min-width: 220px;">
+                OANDA Forex Terminál &rarr;
+            </a>
+        </div>
+    </div>
+
+    <!-- Alsó üveg kártyák -->
+    <div class="row g-4">
+        <!-- SOAP Kártya -->
+        <div class="col-md-6">
+            <div class="p-4 h-100 d-flex flex-column justify-content-between"
+                 style="background: rgba(15, 23, 42, 0.85); border-radius: 1rem; border: 1px solid rgba(56, 189, 248, 0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.4);">
+                <div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="fw-bold mb-0" style="color: #ffffff;">Magyar Nemzeti Bank SOAP</h4>
+                        <span style="background: rgba(37, 99, 235, 0.2); border: 1px solid rgba(37, 99, 235, 0.5); color: #60a5fa; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">WSDL / XML</span>
+                    </div>
+                    <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.6;">
+                        Közvetlen kapcsolat az MNB hivatalos árfolyam-szolgáltatójával. Tetszőleges devizapárok és időintervallumok lekérdezése, XML adatok transzformálása és interaktív Chart.js vizualizáció.
+                    </p>
+                </div>
+                <div class="mt-4">
+                    <a th:href="@{/soap}" class="btn w-100 py-2 fw-semibold"
+                       style="border: 1px solid #38bdf8; color: #38bdf8; background: rgba(56, 189, 248, 0.05); border-radius: 0.5rem; text-decoration: none;">
+                        Grafikon és Lekérdezés megnyitása
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forex Kártya -->
+        <div class="col-md-6">
+            <div class="p-4 h-100 d-flex flex-column justify-content-between"
+                 style="background: rgba(15, 23, 42, 0.85); border-radius: 1rem; border: 1px solid rgba(16, 185, 129, 0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.4);">
+                <div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="fw-bold mb-0" style="color: #ffffff;">OANDA Forex Engine</h4>
+                        <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.5); color: #34d399; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">REST v20</span>
+                    </div>
+                    <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.6;">
+                        Valós idejű devizakereskedési modul az OANDA v20 API-ján keresztül. Élő ajánlati könyv, 10 napos historikus gyertyaadatok, piaci áras megbízáskezelés és nyitott pozíciók zárása.
+                    </p>
+                </div>
+                <div class="mt-4">
+                    <a th:href="@{/forex/account}" class="btn w-100 py-2 fw-semibold"
+                       style="border: 1px solid #34d399; color: #34d399; background: rgba(16, 185, 129, 0.05); border-radius: 0.5rem; text-decoration: none;">
+                        Kereskedési Számla megnyitása
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card bg-dark text-light border-secondary h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <div>
+                    <h5 class="card-title">React CRUD Kezelő</h5>
+                    <p class="card-text text-secondary">
+                        Vite-tal fordított React felület Axios hívásokkal és H2 perzisztenciával.
+                    </p>
+                </div>
+                <a href="/react" target="_blank" class="btn btn-outline-info mt-3">Megnyitás</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}" class="mt-auto"></footer>
+</body>
+</html>
